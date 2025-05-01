@@ -158,7 +158,7 @@ def addCarSale(make, model, builtYear, odometer, price):
     if not row:
         print("The model and make are not the paired")
         return False
-    if int(odometer) < 0 or int(price) < 0:
+    if int(odometer) < 0 or int(price) <= 0:
         return False
     inser_query='''
     insert into carsales (makecode, modelcode, builtYear, odometer, price,issold)
