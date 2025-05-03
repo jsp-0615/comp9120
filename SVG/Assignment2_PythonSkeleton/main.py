@@ -3,7 +3,7 @@ from routes import *
 # Starting the Python application
 if __name__ == '__main__':
     # Step 1: Change this port number if needed
-    PORT_NUMBER = 5001
+    PORT_NUMBER = 5002
 
     print("-"*70)
     print("""Welcome to The Sydney Automotive Group.\n

@@ -15,13 +15,13 @@ def openConnection():
 
     myHost = "127.0.0.1"
     userid = "postgres"
-    passwd = "0615..jsp."
+    passwd = ""
     
     # Create a connection to the database
     conn = None
     try:
         # Parses the config file and connects using the connect string
-        conn = psycopg2.connect(database="usyd_25s1",#userid
+        conn = psycopg2.connect(database=userid,#userid
                                     user=userid,
                                     password=passwd,
                                     host=myHost)
@@ -39,13 +39,14 @@ conn = openConnection()
 def checkLogin(login, password):
 
     cur = conn.cursor()
-    query_sql="select * from Salesperson where LOWER(username)=LOWER(%s) and password=%s"
+    query_sql="SELECT * FROM check_login(%s, %s)"
     login=login.lower()
     cur.execute(query_sql, (login, password))
     result=cur.fetchone()
-    userInfo=[result[0],result[2],result[3]]
+    # userInfo=[result[0],result[2],result[3]]
     cur.close()
     if result:
+        userInfo = [result[0], result[2], result[3]]
         # return Response.success(message="Login Successfully",data=userInfo) 我想要的写法
         return userInfo
     else:
@@ -64,14 +65,7 @@ def checkLogin(login, password):
 """
 def getCarSalesSummary():
     cur = conn.cursor()
-    query_sql='''select makecode as make,modelcode as model,
-           SUM(CASE WHEN issold=FALSE THEN 1 else 0 END) as availableUnits,
-           SUM(CASE WHEN issold=True THEN 1 else 0 END) as soldUnits,
-           SUM(CASE WHEN issold=True THEN price else 0 END) as soldTotalPrices,
-           MAX(CASE WHEN issold = TRUE THEN saledate ELSE NULL END) AS lastPurchaseAt
-    from carsales
-    group by makecode, modelcode
-    order by makecode,modelcode;'''
+    query_sql='''SELECT * FROM get_car_sales_summary()'''
     cur.execute(query_sql)
     rows=cur.fetchall()
     summary=[]
@@ -158,7 +152,7 @@ def addCarSale(make, model, builtYear, odometer, price):
     if not row:
         print("The model and make are not the paired")
         return False
-    if int(odometer) < 0 or int(price) <= 0:
+    if int(odometer) < 0 or int(price) < 0:
         return False
     inser_query='''
     insert into carsales (makecode, modelcode, builtYear, odometer, price,issold)
