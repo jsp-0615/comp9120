@@ -36,9 +36,9 @@ BEGIN
         SUM(CASE WHEN issold=TRUE THEN 1 ELSE 0 END)::INTEGER AS soldUnits,
         SUM(CASE WHEN issold=TRUE THEN price ELSE 0 END)::NUMERIC AS soldTotalPrices,
         MAX(CASE WHEN issold = TRUE THEN saledate ELSE NULL END) AS lastPurchaseAt
-    from carsales as c
-    inner join Make as ma on c.makecode =ma.MakeCode
-    inner join Model as mo on c.modelcode =mo.modelcode
+    from Model as mo
+    left join Make as ma on mo.makecode =ma.MakeCode
+    left join carsales as c on c.modelcode =mo.modelcode
     GROUP BY ma.makename, mo.modelname
     ORDER BY ma.makename asc, mo.modelname asc;
 END;
