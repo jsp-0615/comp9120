@@ -2,7 +2,6 @@
 from datetime import datetime, date
 
 import psycopg2
-from response import Response
 
 #####################################################
 ##  Database Connection
@@ -18,14 +17,14 @@ def openConnection():
 
     myHost = "127.0.0.1"
     userid = "postgres"
-    passwd = ""
+    passwd = "0615..jsp."
 
     # Create a connection to the database
     conn = None
     try:
         # Parses the config file and connects using the connect string
         conn = psycopg2.connect(
-            database=userid, user=userid, password=passwd, host=myHost  # userid
+            database="usyd_25s1", user=userid, password=passwd, host=myHost  # userid
         )
 
     except psycopg2.Error as sqle:
@@ -113,12 +112,14 @@ def findCarSales(searchString):
     cur = conn.cursor()
     pattern = f"%{searchString}%"
     query_sql = """
-    select carsaleid,makecode,modelcode,builtyear,odometer,price,issold,saledate, concat(c.firstname,' ',c.lastname) as Buyer, concat(s.firstname,' ',s.lastname) AS salespersonName  from carsales cs
+    select carsaleid,ma.makename,mo.modelname,builtyear,odometer,price,issold,saledate, concat(c.firstname,' ',c.lastname) as Buyer, concat(s.firstname,' ',s.lastname) AS salespersonName  from carsales cs
     left join Customer c on cs.buyerid = c.customerid
     left join Salesperson s on cs.salespersonid=s.username
-        where (cs.modelcode ILIKE %s OR cs.makecode ILIKE %s or CONCAT(c.firstname, ' ', c.lastname) ILIKE %s OR CONCAT(s.firstname, ' ', s.lastname) ILIKE %s)
+    inner join Make as ma on cs.makecode =ma.MakeCode
+    inner join Model as mo on cs.modelcode =mo.modelcode
+        where (ma.makename ILIKE %s OR mo.modelname ILIKE %s or CONCAT(c.firstname, ' ', c.lastname) ILIKE %s OR CONCAT(s.firstname, ' ', s.lastname) ILIKE %s)
         AND (cs.issold = FALSE OR cs.saledate >= CURRENT_DATE - INTERVAL '3 years')
-    order by issold,saledate asc,makecode,modelcode;"""
+    order by issold,saledate asc,ma.makename asc,mo.modelname asc;"""
 
     cur.execute(query_sql, (pattern, pattern, pattern, pattern))
     rows = cur.fetchall()

@@ -30,15 +30,17 @@ RETURNS TABLE(
 BEGIN
     RETURN QUERY
     SELECT
-        makecode AS make,
-        modelcode AS model,
+        ma.makename AS make,
+        mo.modelname AS model,
         SUM(CASE WHEN issold=FALSE THEN 1 ELSE 0 END)::INTEGER AS availableUnits,
         SUM(CASE WHEN issold=TRUE THEN 1 ELSE 0 END)::INTEGER AS soldUnits,
         SUM(CASE WHEN issold=TRUE THEN price ELSE 0 END)::NUMERIC AS soldTotalPrices,
         MAX(CASE WHEN issold = TRUE THEN saledate ELSE NULL END) AS lastPurchaseAt
-    from carsales
-    GROUP BY makecode, modelcode
-    ORDER BY makecode, modelcode;
+    from carsales as c
+    inner join Make as ma on c.makecode =ma.MakeCode
+    inner join Model as mo on c.modelcode =mo.modelcode
+    GROUP BY ma.makename, mo.modelname
+    ORDER BY ma.makename asc, mo.modelname asc;
 END;
 $$ LANGUAGE plpgsql;
 
