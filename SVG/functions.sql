@@ -1,6 +1,6 @@
 -- functions.sql
 
-DROP FUNCTION check_login(character varying,character varying);
+DROP FUNCTION IF EXISTS check_login(character varying,character varying);
 -- Function to validate salesperson login
 CREATE OR REPLACE FUNCTION check_login(input_username VARCHAR(10), input_password VARCHAR(20))
 RETURNS TABLE(username VARCHAR(10), password VARCHAR(20), firstname VARCHAR(50), lastname VARCHAR(50)) AS $$
@@ -16,7 +16,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION get_car_sales_summary();
+DROP FUNCTION IF EXISTS get_car_sales_summary();
 -- Function to get car sales summary
 CREATE OR REPLACE FUNCTION get_car_sales_summary()
 RETURNS TABLE(
