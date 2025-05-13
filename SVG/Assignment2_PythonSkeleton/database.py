@@ -17,14 +17,14 @@ def openConnection():
 
     myHost = "127.0.0.1"
     userid = "postgres"
-    passwd = "0615..jsp."
+    passwd = ""
 
     # Create a connection to the database
     conn = None
     try:
         # Parses the config file and connects using the connect string
         conn = psycopg2.connect(
-            database="usyd_25s1", user=userid, password=passwd, host=myHost  # userid
+            database="postgres", user=userid, password=passwd, host=myHost  # userid
         )
 
     except psycopg2.Error as sqle:
@@ -155,31 +155,59 @@ def findCarSales(searchString):
 """
 
 
-def addCarSale(make, model, builtYear, odometer, price):
+def addCarSale(makename, modelname, builtYear, odometer, price):
     cur = conn.cursor()
     # search for the valid name of make and model if we can't find any of them then return error
-    query_makecode = (
-        "select MakeCode from Model where lower(MakeCode)=lower(%s) limit 1"
+    # invalid cases:
+    odometer = int(odometer)
+    price = float(price)
+    builtYear = int(builtYear)
+
+    if odometer < 0 or price < 0: # Odometer and price must be positive values
+        return False
+
+    if builtYear > 2025: # Built year must be before 2026
+        return False
+
+    # get makecode
+    # makecode = None
+    # modelcode = None
+    query_makename = (
+        ""
     )
-    cur.execute(query_makecode, (make,))
+    query_makecode = (
+        "select MakeCode from Make where lower(makename)=lower(%s) limit 1" # select from Make
+    )
+    cur.execute(query_makecode, (makename,))
     row = cur.fetchone()
-    if not row:
+    if row:
+        makecode = row[0] # use exist code
+    else:
+        # new_makecode = makename[:3].upper() # create make code, first 3 letters
+        # # insert into new make
+        # cur.execute("INSERT INTO Make (Makecode, Makename) VALUES (%s, %s)",(new_makecode, makename))
+        # makecode = new_makecode
         return False
-    makecode = row[0]
-    query_modelcode = "select ModelCode from Model where lower(ModelCode)=lower(%s) or lower(ModelName) =lower(%s)  limit 1"
-    cur.execute(query_modelcode, (model, model))
+
+
+    # get model
+    query_modelcode = "select ModelCode from Model where lower(Modelname)=lower(%s) limit 1"
+    cur.execute(query_modelcode, (modelname,))
     row = cur.fetchone()
-    if not row:
+    if row:
+        modelcode = row[0]
+    else:
+        # create new model
+        # new_modelcode = modelname.lower().replace(' ', '')
+        # cur.execute("""
+        #     INSERT INTO Model (ModelCode, ModelName, MakeCode)
+        #     VALUES (%s, %s, %s)
+        #     """, (new_modelcode, modelname, makecode))
+        # modelcode = new_modelcode
         return False
-    modelcode = row[0]
-    query_vaildation = "select * from Model where MakeCode=%s and ModelCode=%s"
-    cur.execute(query_vaildation, (makecode, modelcode))
-    row = cur.fetchone()
-    if not row:
-        print("The model and make are not the paired")
-        return False
-    if int(odometer) < 0 or int(price) < 0:
-        return False
+
+
+
     inser_query = """
     insert into carsales (makecode, modelcode, builtYear, odometer, price,issold)
     values (%s, %s, %s, %s, %s,FALSE)
