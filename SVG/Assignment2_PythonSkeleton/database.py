@@ -24,7 +24,7 @@ def openConnection():
     try:
         # Parses the config file and connects using the connect string
         conn = psycopg2.connect(
-            database="postgres", user=userid, password=passwd, host=myHost  # userid
+            database=userid, user=userid, password=passwd, host=myHost  # userid
         )
 
     except psycopg2.Error as sqle:
@@ -284,4 +284,5 @@ def updateCarSale(carsaleid, customer, salesperosn, saledate):
         conn.rollback()
         print("psycopg2.Error : " + str(e))
         return False
+    cur.close()
     return True
