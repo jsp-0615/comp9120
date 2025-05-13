@@ -82,33 +82,32 @@ CREATE TABLE CarSales (
   SalespersonID VARCHAR(10) REFERENCES Salesperson,
   SaleDate Date
 );
-
+SET datestyle = 'ISO, DMY';
 INSERT INTO CarSales (MakeCode, ModelCode, BuiltYear, Odometer, Price, IsSold, BuyerID, SalespersonID, SaleDate) VALUES
-                 ('MB', 'cclass', 2020, 64210, 72000.00, TRUE, 'c001', 'jdoe', '2024-03-01'),
-                 ('MB', 'eclass', 2019, 31210, 89000.00, FALSE, NULL, NULL, NULL),
-                 ('TOY', 'camry', 2021, 98200, 37200.00, TRUE, 'c123', 'brown', '2023-12-07'),
-                 ('TOY', 'corolla', 2022, 65000, 35000.00, TRUE, 'c910', 'jdoe', '2024-09-21'),
-                 ('LR', 'defender', 2018, 115000, 97000.00, FALSE, NULL, NULL, NULL),
-                 ('VW', 'golf', 2023, 22000, 33000.00, TRUE, 'c233', 'jdoe', '2023-11-06'),
-                 ('LEX', 'nx', 2020, 67000, 79000.00, TRUE, 'c321', 'brown', '2025-01-01'),
-                 ('LR', 'discosport', 2021, 43080, 85000.00, TRUE, 'c211', 'ksmith1', '2021-01-27'),
-                 ('TOY', 'rav4', 2019, 92900, 48000.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'aclass', 2022, 47000, 57000.00, TRUE, 'c199', 'jdoe', '2025-03-01'),
-                 ('LEX', 'ux', 2023, 23000, 70000.00, TRUE, 'c899', 'brown', '2023-01-01'),
-                 ('VW', 'passat', 2020, 63720, 42000.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'eclass', 2021, 12000, 155000.00, TRUE, 'c002', 'ksmith1', '2024-10-01'),
-                 ('LR', 'rangerover', 2017, 60000, 128000.00, FALSE, NULL, NULL, NULL),
-                 ('TOY', 'camry', 2025, 10, 49995.00, FALSE, NULL, NULL, NULL),
-                 ('LR', 'discosport', 2022, 53000, 89900.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'cclass', 2023, 55000, 82100.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'aclass', 2025, 5, 78000.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'aclass', 2015, 8912, 12000.00, TRUE, 'c199', 'jdoe', '2020-03-11'),
-                 ('TOY', 'camry', 2024, 21000, 42000.00, FALSE, NULL, NULL, NULL),
-                 ('LEX', 'gx', 2025, 6, 128085.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'eclass', 2019, 99220, 105000.00, FALSE, NULL, NULL, NULL),
-                 ('VW', 'golf', 2023, 53849, 43000.00, FALSE, NULL, NULL, NULL),
-                 ('MB', 'cclass', 2022, 89200, 62000.00, FALSE, NULL, NULL, NULL);
-
+('MB', 'cclass', 2020, 64210, 72000.00, TRUE, 'c001', 'jdoe', '01/03/2024'),
+('MB', 'eclass', 2019, 31210, 89000.00, FALSE, NULL, NULL, NULL),
+('TOY', 'camry', 2021, 98200, 37200.00, TRUE, 'c123', 'brown', '07/12/2023'),
+('TOY', 'corolla', 2022, 65000, 35000.00, TRUE, 'c910', 'jdoe', '21/09/2024'),
+('LR', 'defender', 2018, 115000, 97000.00, FALSE, NULL, NULL, NULL),
+('VW', 'golf', 2023, 22000, 33000.00, TRUE, 'c233', 'jdoe', '06/11/2023'),
+('LEX', 'nx', 2020, 67000, 79000.00, TRUE, 'c321', 'brown', '01/01/2025'),
+('LR', 'discosport', 2021, 43080, 85000.00, TRUE, 'c211', 'ksmith1', '27/01/2021'),
+('TOY', 'rav4', 2019, 92900, 48000.00, FALSE, NULL, NULL, NULL),
+('MB', 'aclass', 2022, 47000, 57000.00, TRUE, 'c199', 'jdoe', '01/03/2025'),
+('LEX', 'ux', 2023, 23000, 70000.00, TRUE, 'c899', 'brown', '01/01/2023'),
+('VW', 'passat', 2020, 63720, 42000.00, FALSE, NULL, NULL, NULL),
+('MB', 'eclass', 2021, 12000, 155000.00, TRUE, 'c002', 'ksmith1', '01/10/2024'),
+('LR', 'rangerover', 2017, 60000, 128000.00, FALSE, NULL, NULL, NULL),
+('TOY', 'camry', 2025, 10, 49995.00, FALSE, NULL, NULL, NULL),
+('LR', 'discosport', 2022, 53000, 89900.00, FALSE, NULL, NULL, NULL),
+('MB', 'cclass', 2023, 55000, 82100.00, FALSE, NULL, NULL, NULL),
+('MB', 'aclass', 2025, 5, 78000.00, FALSE, NULL, NULL, NULL),
+('MB', 'aclass', 2015, 8912, 12000.00, TRUE, 'c199', 'jdoe', '11/03/2020'),
+('TOY', 'camry', 2024, 21000, 42000.00, FALSE, NULL, NULL, NULL),
+('LEX', 'gx', 2025, 6, 128085.00, FALSE, NULL, NULL, NULL),
+('MB', 'eclass', 2019, 99220, 105000.00, FALSE, NULL, NULL, NULL),
+('VW', 'golf', 2023, 53849, 43000.00, FALSE, NULL, NULL, NULL),
+('MB', 'cclass', 2022, 89200, 62000.00, FALSE, NULL, NULL, NULL);
 -- stored procedures
 
 -- functions.sql
